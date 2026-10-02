@@ -27,7 +27,11 @@ flowchart LR
 | **AI news digest.** About 90 new items from 30 sources each day, cut to the 8–10 stories worth reading, written in Chinese, each with its link. | **A CV for one job.** Paste a job ad; get a Word and a PDF CV that use the ad's own terms, built only from facts I wrote down. Ask for changes in the same chat. |
 | **Hong Kong job digest.** New ads from JobsDB and CTgoodjobs, with the ones that are certainly wrong for me dropped, and the rest judged against what I want. | **Web questions.** Search and read pages, including ones that need a real browser, and answer with sources. |
 
-<!-- Screenshots go here: the news digest, the job digest and a CV reply, on the phone. -->
+| AI news digest | HK job digest | A CV for one job |
+| --- | --- | --- |
+| <img src="img/news.jpg" alt="AI news digest in the chat app on a phone" width="260"> | <img src="img/jobs.jpg" alt="Hong Kong job digest in the chat app on a phone" width="260"> | <img src="img/cv.jpg" alt="A CV request and the reply with Word and PDF files attached" width="260"> |
+
+Screenshots from my phone. Company names, the job link and details of the application are hidden.
 
 ## Why not just ask ChatGPT?
 
@@ -93,6 +97,17 @@ flowchart LR
     news --> fetch
     jobs --> fetch
 ```
+
+### Where to start reading
+
+Nothing here is meant to be installed. To see how it was built, read in this order:
+
+1. [CLAUDE.md](CLAUDE.md): the contract every agent session starts from.
+2. [.cursor/plans/security.plan.md](.cursor/plans/security.plan.md): a finished plan. Each step is checked off with its evidence, and each rejected option points to where its reason now lives.
+3. [docs/security.md](docs/security.md): where that plan's conclusions went.
+4. [.cursor/plans/ai-news.plan.md](.cursor/plans/ai-news.plan.md): a plan still running, with its biggest unknown, one next step and a done-when.
+
+For the code, start with [docs/web-fetch.md](docs/web-fetch.md) and then [plugins/fetch_cascade/](plugins/fetch_cascade/): the shared layer the use cases are built on.
 
 ### Design decisions
 

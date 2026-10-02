@@ -27,7 +27,11 @@ flowchart LR
 | **AI 新聞摘要。** 每天從 30 個來源收集約 90 條新資訊，篩選出值得一讀的 8 至 10 則，以中文撰寫，每則附上連結。 | **針對一份工作的 CV。** 貼上招聘廣告，即可取得 Word 和 PDF 版本的 CV，用上廣告本身的字眼，而內容只來自我親自寫下的事實。可在同一個對話中要求修改。 |
 | **香港職位摘要。** 收集 JobsDB 和 CTgoodjobs 的新廣告，先剔除肯定不合適的，其餘按我的要求逐一判斷。 | **網上查詢。** 搜尋和閱讀網頁（包括需要真正瀏覽器才能顯示的網頁），回答時附上來源。 |
 
-<!-- 截圖放這裏：手機上的新聞摘要、職位摘要和 CV 回覆。 -->
+| AI 新聞摘要 | 香港職位摘要 | 針對一份工作的 CV |
+| --- | --- | --- |
+| <img src="img/news.jpg" alt="手機聊天 app 上的 AI 新聞摘要" width="260"> | <img src="img/jobs.jpg" alt="手機聊天 app 上的香港職位摘要" width="260"> | <img src="img/cv.jpg" alt="要求撰寫 CV，回覆附上 Word 和 PDF 檔案" width="260"> |
+
+以上是我手機的截圖。公司名稱、職位連結和申請細節已遮蓋。
 
 ## 為甚麼不直接問 ChatGPT？
 
@@ -93,6 +97,17 @@ flowchart LR
     news --> fetch
     jobs --> fetch
 ```
+
+### 從哪裏開始閱讀
+
+這裏的內容不是用來安裝的。想了解它如何建成，建議按以下次序閱讀：
+
+1. [CLAUDE.md](CLAUDE.md)：每個 agent session 開始時讀的工作合約。
+2. [.cursor/plans/security.plan.md](.cursor/plans/security.plan.md)：一份已完成的 plan。每一步都附證據才剔掉，每個被否決的方案都指向它的理由現在放在哪裏。
+3. [docs/security.md](docs/security.md)：那份 plan 的結論最後放在這裏。
+4. [.cursor/plans/ai-news.plan.md](.cursor/plans/ai-news.plan.md)：一份仍在進行的 plan，有最大的未知數、下一步和完成條件。
+
+想看 code，先讀 [docs/web-fetch.md](docs/web-fetch.md)，再看 [plugins/fetch_cascade/](plugins/fetch_cascade/)：所有用途共用的那一層。
 
 ### 設計決定
 
