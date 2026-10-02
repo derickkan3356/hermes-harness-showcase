@@ -1,0 +1,19 @@
+[Unit]
+Description=Open WebUI, the chat frontend for Hermes
+After=network-online.target hermes-gateway.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Secret key, DATA_DIR and the Hermes / LM Studio connections. Not tracked.
+EnvironmentFile=%h/.config/open-webui/env
+WorkingDirectory=%h/.local/share/open-webui
+# Loopback only: Tailscale Serve is the way in from other devices.
+ExecStart=%h/.local/bin/open-webui serve --host 127.0.0.1 --port 8080
+# Automations run inside this process.
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target

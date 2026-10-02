@@ -1,0 +1,10 @@
+name: cv
+version: 0.1.0
+description: "A tailored CV per job from the user's master of facts: cv_master reads the master; cv_write and cv_edit keep one draft per chat, by bullet id, each bullet citing the fact ids it rests on, and return checks (numbers not in the cited facts, names, JD terms missing, banned words); cv_render fills the Word template and converts it to PDF into the chat's outbox, which the Open WebUI Pipe attaches to the reply. Takes no path or URL from the model."
+author: hermes-harness
+kind: standalone
+provides_tools:
+  - cv_master
+  - cv_write
+  - cv_edit
+  - cv_render

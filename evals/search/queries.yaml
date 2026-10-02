@@ -1,0 +1,268 @@
+# Search eval query set: Hong Kong, mainland China, Japan.
+#
+# Two kinds of query:
+#   local      The text itself points at one region (place name, script, local term).
+#              Run once. Scored against `region`.
+#   ambiguous  No place in the text. Run once per region in `regions`, with that
+#              region's parameters (ddgs code, google gl/hl for serper and scrappa, brave country[/search_lang]). Scored against the region under test.
+#              This is the set that shows whether a region parameter does anything.
+#
+# Scoring: a result URL is "in region" when its hostname ends with one of that
+# region's `domains` entries. A query hits when at least one of the top 5 URLs is
+# in region. Also record the in-region share of the top 5, and 0-hit results.
+#
+# Tags: gov, news, transport, finance, food, shopping, tech, travel, weather,
+# colloquial (spoken or informal wording), time (answer changes over time),
+# operator (query uses site: or similar).
+
+regions:
+  hk:
+    ddgs: hk-tzh
+    google: {gl: hk, hl: zh}  # scrappa takes 2-letter hl only
+    brave: {country: HK}
+    place: 香港  # brave-rewrite puts this in front of the query
+    brave_lang: {country: HK, search_lang: zh-hant}
+    domains: [.hk, hk01.com, scmp.com, mingpao.com, on.cc, stheadline.com, hkej.com, hket.com, openrice.com, hkgolden.com, lihkg.com, discuss.com.hk, 28hse.com, centaline.com.hk]
+  cn:
+    ddgs: cn-zh
+    google: {gl: cn, hl: zh}
+    brave: {country: CN}
+    place: 中国  # brave-rewrite puts this in front of the query
+    brave_lang: {country: CN, search_lang: zh-hans}
+    domains: [.cn, baidu.com, zhihu.com, qq.com, sohu.com, 163.com, sina.com, weibo.com, bilibili.com, douban.com, csdn.net, ctrip.com, dianping.com, jd.com, taobao.com, tmall.com, xiaohongshu.com, toutiao.com, ithome.com, 36kr.com, dongchedi.com, autohome.com]
+  jp:
+    ddgs: jp-jp
+    google: {gl: jp, hl: ja}
+    brave: {country: JP}
+    place: 日本  # brave-rewrite puts this in front of the query
+    brave_lang: {country: JP, search_lang: jp}
+    domains: [.jp, nikkei.com, tabelog.com, jalan.net, kakaku.com, gurunavi.com, suumo.com, homes.com, livedoor.com, japan-guide.com, japanrailpass.net, jrailpass.com, tenki.jp, weathernews.jp]
+
+queries:
+  # --- Hong Kong -----------------------------------------------------------
+  - id: hk-hko-9day
+    kind: local
+    region: hk
+    lang: zh-hant
+    tags: [gov, weather, time]
+    query: 天文台 九天天氣預報
+  - id: hk-mtr-tungchung-ext
+    kind: local
+    region: hk
+    lang: zh-hant
+    tags: [transport, news]
+    query: 港鐵 東涌綫延線 通車日期
+  - id: hk-mpf-tvc-tax
+    kind: local
+    region: hk
+    lang: zh-hant
+    tags: [finance, gov]
+    query: 強積金 可扣稅自願性供款 扣稅上限
+  - id: hk-mongkok-noodles
+    kind: local
+    region: hk
+    lang: zh-hant
+    tags: [food, colloquial]
+    query: 旺角 車仔麵 邊間好食
+  - id: hk-public-housing-wait
+    kind: local
+    region: hk
+    lang: zh-hant
+    tags: [gov, news, time]
+    query: 公屋 一般申請者 平均輪候時間 最新
+  - id: hk-hsi-close
+    kind: local
+    region: hk
+    lang: zh-hant
+    tags: [finance, time]
+    query: 恒指 今日 收市
+  - id: hk-smart-id-renew
+    kind: local
+    region: hk
+    lang: zh-hant
+    tags: [gov, colloquial]
+    query: 點樣 預約 換領 智能身份證
+  - id: hk-typhoon-signal-en
+    kind: local
+    region: hk
+    lang: en
+    tags: [weather, news, time]
+    query: Hong Kong typhoon signal No. 8 latest
+  - id: hk-hktvmall-return
+    kind: local
+    region: hk
+    lang: zh-hant
+    tags: [shopping]
+    query: HKTVmall 退貨 退款 政策
+  - id: hk-policy-address-site
+    kind: local
+    region: hk
+    lang: zh-hant
+    tags: [gov, operator]
+    query: site:info.gov.hk 施政報告
+
+  # --- Mainland China ------------------------------------------------------
+  - id: cn-beijing-subway-last
+    kind: local
+    region: cn
+    lang: zh-hans
+    tags: [transport]
+    query: 北京地铁 末班车 时间
+  - id: cn-iit-deduction
+    kind: local
+    region: cn
+    lang: zh-hans
+    tags: [finance, gov]
+    query: 个人所得税 专项附加扣除 标准 2026
+  - id: cn-shanghai-disney-ticket
+    kind: local
+    region: cn
+    lang: zh-hans
+    tags: [travel, shopping]
+    query: 上海迪士尼 门票 价格
+  - id: cn-gaokao-guangdong
+    kind: local
+    region: cn
+    lang: zh-hans
+    tags: [gov, news, time]
+    query: 2026 广东 高考 本科 分数线
+  - id: cn-shenzhen-social-insurance
+    kind: local
+    region: cn
+    lang: zh-hans
+    tags: [gov, finance]
+    query: 深圳 社保 缴费基数 上下限
+  - id: cn-taobao-return-insurance
+    kind: local
+    region: cn
+    lang: zh-hans
+    tags: [shopping, colloquial]
+    query: 淘宝 退货运费险 怎么用
+  - id: cn-chengdu-hotpot
+    kind: local
+    region: cn
+    lang: zh-hans
+    tags: [food, colloquial]
+    query: 成都 本地人 常去的 火锅店
+  - id: cn-cpi-latest
+    kind: local
+    region: cn
+    lang: zh-hans
+    tags: [gov, finance, time]
+    query: 国家统计局 CPI 最新 数据
+  - id: cn-llm-local-gpu
+    kind: local
+    region: cn
+    lang: zh-hans
+    tags: [tech]
+    query: 大模型 本地部署 显卡 推荐 知乎
+  - id: cn-ev-sales
+    kind: local
+    region: cn
+    lang: zh-hans
+    tags: [news, time]
+    query: 国内 新能源车 月销量 排行榜
+
+  # --- Japan ---------------------------------------------------------------
+  - id: jp-tokyo-weather
+    kind: local
+    region: jp
+    lang: ja
+    tags: [weather, time]
+    query: 東京 週間天気
+  - id: jp-yamanote-status
+    kind: local
+    region: jp
+    lang: ja
+    tags: [transport, time]
+    query: 山手線 運行状況
+  - id: jp-furusato-limit
+    kind: local
+    region: jp
+    lang: ja
+    tags: [finance, gov]
+    query: ふるさと納税 控除上限 計算
+  - id: jp-shibuya-ramen
+    kind: local
+    region: jp
+    lang: ja
+    tags: [food]
+    query: 渋谷 ラーメン おすすめ
+  - id: jp-nikkei-close
+    kind: local
+    region: jp
+    lang: ja
+    tags: [finance, time]
+    query: 日経平均 終値 今日
+  - id: jp-shinkansen-fare
+    kind: local
+    region: jp
+    lang: ja
+    tags: [transport, travel]
+    query: 新幹線 東京 新大阪 料金 のぞみ
+  - id: jp-mynumber-renew
+    kind: local
+    region: jp
+    lang: ja
+    tags: [gov]
+    query: マイナンバーカード 更新 手続き
+  - id: jp-osaka-rent
+    kind: local
+    region: jp
+    lang: ja
+    tags: [shopping, finance]
+    query: 大阪市 1LDK 家賃 相場
+  - id: jp-jr-pass-en
+    kind: local
+    region: jp
+    lang: en
+    tags: [travel]
+    query: JR Pass price and where to buy
+  - id: jp-earthquake-latest
+    kind: local
+    region: jp
+    lang: ja
+    tags: [news, time]
+    query: 地震情報 最新
+
+  # --- Ambiguous: run under every region -----------------------------------
+  - id: amb-weather-en
+    kind: ambiguous
+    lang: en
+    tags: [weather]
+    query: weather forecast
+  - id: amb-public-holidays-en
+    kind: ambiguous
+    lang: en
+    tags: [gov]
+    query: public holidays 2026
+  - id: amb-minimum-wage-en
+    kind: ambiguous
+    lang: en
+    tags: [gov, finance]
+    query: minimum wage
+  - id: amb-train-delays-en
+    kind: ambiguous
+    lang: en
+    tags: [transport, time]
+    query: train delays today
+  - id: amb-property-prices-en
+    kind: ambiguous
+    lang: en
+    tags: [finance]
+    query: property prices
+  - id: amb-stock-index-en
+    kind: ambiguous
+    lang: en
+    tags: [finance, time]
+    query: stock market today
+  - id: amb-weather-zh-hant
+    kind: ambiguous
+    lang: zh-hant
+    tags: [weather]
+    query: 天氣
+  - id: amb-property-zh-hant
+    kind: ambiguous
+    lang: zh-hant
+    tags: [finance]
+    query: 樓價 走勢

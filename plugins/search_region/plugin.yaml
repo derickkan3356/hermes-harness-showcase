@@ -1,0 +1,7 @@
+name: search-region
+version: 0.1.0
+description: "Replaces web_search with a version that takes a region (aims the query at Hong Kong, mainland China or Japan sites) and returns an error instead of an empty success when the search finds nothing. Backend-agnostic — it wraps whatever web.search_backend is set to."
+author: hermes-harness
+kind: backend
+provides_tools:
+  - web_search

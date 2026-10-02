@@ -1,0 +1,190 @@
+# The fetch eval's target set. Each entry names what it is meant to expose, so a
+# result that looks wrong can be read against the reason the URL is here.
+#
+# kind:  hk-news | hk-gov | mainland | js-heavy | pdf | control | wall
+# Landing pages are preferred over articles: article URLs rot, and a 404 six
+# months from now would read as a cascade failure.
+
+- id: hko-9day
+  url: https://www.hko.gov.hk/en/wxinfo/currwx/fnd.htm
+  kind: hk-gov
+  note: Values written in by JavaScript. Layer 1 returns the skeleton with {0} slots.
+
+- id: hko-flw-tc
+  url: https://www.hko.gov.hk/tc/wxinfo/currwx/flw.htm
+  kind: hk-gov
+  note: Current weather in Chinese, same site, shorter page.
+
+- id: info-gov-hk
+  url: https://www.info.gov.hk/gia/general/today.htm
+  kind: hk-gov
+  note: Government press release index. Plain server-rendered HTML, link-heavy.
+
+- id: gov-hk-residents
+  url: https://www.gov.hk/en/residents/
+  kind: hk-gov
+  note: Portal page, mostly navigation. Tests the character floor on a thin page.
+
+- id: censtatd
+  url: https://www.censtatd.gov.hk/en/
+  kind: hk-gov
+  note: Statistics department front page.
+
+- id: rthk-latest
+  url: https://news.rthk.hk/rthk/ch/latest-news.htm
+  kind: hk-news
+  note: Chinese news list, server-rendered.
+
+- id: scmp-hk
+  url: https://www.scmp.com/news/hong-kong
+  kind: hk-news
+  note: Next.js. Passes the character floor at a very low extraction ratio.
+
+- id: hk01
+  url: https://www.hk01.com/
+  kind: hk-news
+  note: Chinese news portal, heavy client-side rendering.
+
+- id: thestandard
+  url: https://www.thestandard.com.hk/
+  kind: hk-news
+  note: English HK daily.
+
+- id: hkej
+  url: https://www.hkej.com/
+  kind: hk-news
+  note: Paywalled Chinese financial daily.
+
+- id: mingpao
+  url: https://news.mingpao.com/ins/instantnews
+  kind: wall
+  note: Returns 403 to a plain GET. Tests whether a rendered read gets past it.
+
+- id: stackoverflow
+  url: https://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-processing-an-unsorted-array
+  kind: wall
+  note: Returns 403 to a plain GET. A long answer page if the wall opens.
+
+- id: x-profile
+  url: https://x.com/elonmusk
+  kind: wall
+  note: Login wall plus full client rendering. Expected to fail every local layer.
+
+- id: gov-cn
+  url: https://www.gov.cn/
+  kind: mainland
+  note: Link portal with almost no prose. Neither layer improves it.
+
+- id: sina-news
+  url: https://news.sina.com.cn/
+  kind: mainland
+  note: Large traditional news portal.
+
+- id: xinhua
+  url: https://www.xinhuanet.com/
+  kind: mainland
+  note: State news agency front page.
+
+- id: chinanews
+  url: https://www.chinanews.com.cn/
+  kind: mainland
+  note: Second mainland news source, different stack.
+
+- id: zhihu
+  url: https://www.zhihu.com/
+  kind: mainland
+  note: Aggressive bot detection. The layer 3 question is answered here.
+
+- id: 36kr
+  url: https://36kr.com/
+  kind: mainland
+  note: Tech news, client-rendered.
+
+- id: weixin-portal
+  url: https://mp.weixin.qq.com/
+  kind: mainland
+  note: WeChat article host. The portal page stands in for article pages.
+
+- id: bbc-zhongwen
+  url: https://www.bbc.com/zhongwen/trad
+  kind: js-heavy
+  note: Next.js. Content also present in __NEXT_DATA__.
+
+- id: reddit-hongkong
+  url: https://www.reddit.com/r/HongKong/
+  kind: js-heavy
+  note: Client-rendered listing behind rate limiting.
+
+- id: nextjs-docs
+  url: https://nextjs.org/docs
+  kind: js-heavy
+  note: Documentation in a React app. Real prose, rendered client-side.
+
+- id: react-learn
+  url: https://react.dev/learn
+  kind: js-heavy
+  note: Same shape, different framework build.
+
+- id: github-repo
+  url: https://github.com/NousResearch/Hermes-Agent
+  kind: js-heavy
+  note: README rendered server-side inside a heavy app shell.
+
+- id: arxiv-pdf
+  url: https://arxiv.org/pdf/1706.03762
+  kind: pdf
+  note: Text-layer PDF. Must be served by layer 1 and never escalate.
+
+- id: budget-pdf
+  url: https://www.budget.gov.hk/2025/eng/pdf/e_budget_speech_2025-26.pdf
+  kind: pdf
+  note: HK government PDF, long, different producer.
+
+- id: wikipedia-hk
+  url: https://zh.wikipedia.org/wiki/%E9%A6%99%E6%B8%AF
+  kind: control
+  note: Long article, clean HTML. Should always pass layer 1.
+
+- id: hackernews
+  url: https://news.ycombinator.com
+  kind: control
+  note: Minimal static HTML, high extraction ratio.
+
+- id: example-com
+  url: https://example.com
+  kind: control
+  note: 113 characters and complete. The character floor's known false positive.
+
+# Article pages — the shape an agent actually reads, since it reaches an article
+# from a search result and rarely fetches a front page. These rot: refresh them
+# with `--discover`, which harvests the same sources live and never goes stale.
+
+- id: art-rthk
+  url: https://news.rthk.hk/rthk/ch/component/k2/1870649-20260918.htm
+  kind: article
+  note: Chinese news item. Watch for a navigation strip ahead of the text.
+
+- id: art-sina
+  url: https://news.sina.com.cn/zx/2026-09-18/doc-inisfazn8669682.shtml
+  kind: article
+  note: Mainland news item. The portal front page reads thin; this should not.
+
+- id: art-chinanews
+  url: https://www.chinanews.com.cn/gn/2026/09-18/10698785.shtml
+  kind: article
+  note: Second mainland source, different stack.
+
+- id: art-xinhua
+  url: https://www.news.cn/politics/leaders/20260918/c261baae53104097b5cc3e835f91a829/c.html
+  kind: article
+  note: State agency item.
+
+- id: art-scmp
+  url: https://www.scmp.com/news/hong-kong/health-environment/article/3368007/doctors-urged-test-chikungunya-hong-kong-detects-first-local-2026-case
+  kind: article
+  note: Next.js article behind a soft paywall.
+
+- id: art-info-gov-hk
+  url: https://www.info.gov.hk/gia/general/202609/18/P2026091800597.htm
+  kind: article
+  note: Government press release, plain server-rendered HTML.

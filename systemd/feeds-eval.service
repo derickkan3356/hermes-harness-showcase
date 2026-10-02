@@ -1,0 +1,7 @@
+[Unit]
+Description=Collect the AI news feed set (evals/feeds)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/user/projects/hermes-harness
+ExecStart=/home/user/.local/bin/uv run evals/feeds/feeds_eval.py

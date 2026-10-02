@@ -1,0 +1,37 @@
+# Index pages that articles are harvested from, for `fetch_eval.py --discover`.
+#
+# An article URL rots; an index page does not. Discovery walks these, keeps the
+# links matching `pattern`, and fetches the first few — so the eval can cover the
+# page shape an agent actually reads without a list that dies in a month. The
+# pinned `kind: article` entries in urls.yaml exist alongside it, because a set
+# that changes every run cannot be compared run against run.
+#
+# Discovery reads the index page's server HTML, so a site that writes its article
+# links in with JavaScript cannot be harvested this way. thestandard.com.hk and
+# hk01.com are both like that: their front pages carry navigation links and
+# nothing else.
+
+- id: rthk
+  url: https://news.rthk.hk/rthk/ch/latest-news.htm
+  pattern: 'component/k2/\d+'
+  kind: article
+- id: sina
+  url: https://news.sina.com.cn/
+  pattern: '/\d{4}-\d{2}-\d{2}/doc-'
+  kind: article
+- id: chinanews
+  url: https://www.chinanews.com.cn/
+  pattern: '/\d{4}/\d{2}-\d{2}/\d+\.shtml'
+  kind: article
+- id: xinhua
+  url: https://www.xinhuanet.com/
+  pattern: '/\d{8}/[0-9a-f]{8,}/c\.html'
+  kind: article
+- id: scmp
+  url: https://www.scmp.com/news/hong-kong
+  pattern: '/news/hong-kong/[a-z-]+/article/\d+'
+  kind: article
+- id: info-gov-hk
+  url: https://www.info.gov.hk/gia/general/today.htm
+  pattern: '/gia/general/\d{6}/\d{2}/P\d+\.htm'
+  kind: article

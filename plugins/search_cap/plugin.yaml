@@ -1,0 +1,5 @@
+name: search-cap
+version: 0.1.0
+description: "On qwen3.8-27b-obliterated, after 20 web_search calls in one turn, the next LM Studio request has its tools removed and repeated tool rounds dropped, so the model has to write an answer."
+author: hermes-harness
+kind: standalone

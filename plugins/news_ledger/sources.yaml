@@ -1,0 +1,258 @@
+# The sources the AI news digest reads, and the table `evals/feeds` measures.
+#
+# Every URL here answered 200 with parsable items from this machine, with the
+# proxy unset. None needs an API key, and none may grow one without saying so in
+# docs/ai-news.md.
+#
+# kind:
+#   feed         RSS or Atom
+#   algolia      Hacker News search, official API, one call per `query`
+#   hf           HuggingFace daily papers
+#   hf_models    what each of `authors` uploaded to HuggingFace
+#   gnews        Google News restricted to `site` (links are Google redirects)
+#   arxiv_query  arXiv API field search
+#
+# bucket   the routing label (docs/ai-news.md, Buckets), not a quota
+# family   sources with one publisher share a family and count as one witness
+#          when a story's corroboration is counted; defaults to the id
+# control  measured by the eval, never offered to the digest
+# label    prefixed to titles that do not name their project: a release feed's
+#          titles are bare tags like `b11122`
+# latest_only  the digest keeps only this source's newest item in the window:
+#          llama.cpp tags several builds a day, and each is not news
+# min_relevance  a story carried only by sources with a floor must reach the
+#          lowest of them (`passes` in workers/news.py). Set on wide-net sources
+#          only, from labelled data: `uv run evals/relevance/relevance_eval.py
+#          report`. Each sits where about 5% of the source's on-topic stories
+#          are lost. A curated source gets none: its titles score low for lack
+#          of words, not of relevance.
+# dated_by: first_seen  the digest's period holds this source's items by when
+#          the ledger first saw them, not by `published` (`in_period` in
+#          workers/news.py): arXiv's date is the submission, and the paper is
+#          readable only from the next announcement, often more than a day later
+- id: openai-news
+  bucket: models
+  kind: feed
+  url: https://openai.com/news/rss.xml
+
+- id: deepmind-blog
+  bucket: models
+  kind: feed
+  url: https://deepmind.google/blog/rss.xml
+
+- id: google-research
+  bucket: models
+  kind: feed
+  url: https://research.google/blog/rss/
+
+- id: hf-blog
+  bucket: models
+  kind: feed
+  url: https://huggingface.co/blog/feed.xml
+
+# Qwen's feed answers 200 but stopped at Qwen3Guard in September 2025 — the blog
+# moved to qwen.ai, which serves its posts from JavaScript and declares no feed.
+# Kept so a restart is picked up; it contributes nothing meanwhile.
+- id: qwen-blog
+  bucket: models
+  kind: feed
+  url: https://qwenlm.github.io/blog/index.xml
+
+- id: hf-daily-papers
+  bucket: models
+  kind: hf
+  url: https://huggingface.co/api/daily_papers?limit=50
+  min_relevance: 0.68
+
+- id: hn-llm
+  family: hn
+  bucket: agent-eng
+  kind: algolia
+  query: LLM
+  min_points: 50
+  min_relevance: 0.58
+
+- id: hn-agent
+  family: hn
+  bucket: agent-eng
+  kind: algolia
+  query: AI agent
+  min_points: 50
+  min_relevance: 0.58
+
+- id: hn-mcp
+  family: hn
+  bucket: agent-eng
+  kind: algolia
+  query: MCP
+  min_points: 30
+  min_relevance: 0.58
+
+- id: simonwillison
+  bucket: agent-eng
+  kind: feed
+  url: https://simonwillison.net/atom/everything/
+
+- id: latent-space
+  bucket: agent-eng
+  kind: feed
+  url: https://www.latent.space/feed
+
+- id: import-ai
+  bucket: agent-eng
+  kind: feed
+  url: https://jack-clark.net/feed/
+
+- id: mcp-spec-releases
+  label: MCP spec
+  latest_only: true
+  bucket: agent-eng
+  kind: feed
+  url: https://github.com/modelcontextprotocol/modelcontextprotocol/releases.atom
+
+- id: langgraph-releases
+  label: LangGraph
+  latest_only: true
+  bucket: agent-eng
+  kind: feed
+  url: https://github.com/langchain-ai/langgraph/releases.atom
+
+# The whole of cs.CL and cs.IR, about 410 papers a day. Never offered: they are
+# the control the eval measures the arXiv topic queries against, to see what
+# keyword search misses.
+- id: arxiv-cs-cl
+  family: arxiv
+  control: true
+  bucket: applied
+  kind: feed
+  url: https://rss.arxiv.org/rss/cs.CL
+
+- id: arxiv-cs-ir
+  family: arxiv
+  control: true
+  bucket: applied
+  kind: feed
+  url: https://rss.arxiv.org/rss/cs.IR
+
+- id: docling-releases
+  label: Docling
+  latest_only: true
+  bucket: applied
+  kind: feed
+  url: https://github.com/docling-project/docling/releases.atom
+
+- id: hn-rag-sql
+  family: hn
+  bucket: applied
+  kind: algolia
+  query: text-to-SQL OR RAG
+  min_points: 20
+
+# Top of the day, not newest: /new is every help request and first post, and the
+# day's votes are the community doing the filtering.
+- id: localllama
+  bucket: open-weights
+  kind: feed
+  url: https://www.reddit.com/r/LocalLLaMA/top/.rss?t=day
+
+- id: llamacpp-releases
+  label: llama.cpp
+  latest_only: true
+  bucket: open-weights
+  kind: feed
+  url: https://github.com/ggml-org/llama.cpp/releases.atom
+
+- id: vllm-releases
+  label: vLLM
+  latest_only: true
+  bucket: open-weights
+  kind: feed
+  url: https://github.com/vllm-project/vllm/releases.atom
+
+- id: ollama-blog
+  bucket: open-weights
+  kind: feed
+  url: https://ollama.com/blog/rss.xml
+
+# --- standing in for a lab that publishes no feed ----------------------------
+#
+# Anthropic, Meta AI and Mistral declare no feed, and Qwen's is dead. These two
+# kinds cover that hole from opposite sides, and both are measured this week
+# before either is trusted.
+
+# What a lab ships, from its own HuggingFace account. Real URL, real timestamp,
+# and downloads and likes to rank on. Blind to any lab that ships no weights.
+- id: hf-model-releases
+  bucket: models
+  kind: hf_models
+  limit: 20
+  authors:
+    - Qwen
+    - deepseek-ai
+    - mistralai
+    - zai-org
+    - moonshotai
+    - meta-llama
+    - openai
+    - google
+    - microsoft
+    - nvidia
+
+# Headlines from a lab's own site, by way of Google News. `site` may carry a
+# path: bare `mistral.ai` returns its documentation pages as news. The date is exact and
+# the headline is real. The link is a Google-encoded redirect that only a browser
+# follows — `web_extract` reads it through the cascade's browser layer, plain HTTP
+# gets Google's page — and it is not the article's URL, so `opaque_url` keeps it
+# out of URL dedup.
+- id: gnews-anthropic
+  bucket: models
+  kind: gnews
+  site: anthropic.com
+  opaque_url: true
+
+- id: gnews-meta-ai
+  bucket: models
+  kind: gnews
+  site: ai.meta.com
+  opaque_url: true
+
+- id: gnews-mistral
+  bucket: models
+  kind: gnews
+  site: mistral.ai/news
+  opaque_url: true
+
+# An edited tech-news aggregator. Real links, and it carries provider news that
+# never reaches Hacker News.
+- id: techmeme
+  bucket: models
+  kind: feed
+  url: https://www.techmeme.com/feed.xml
+  min_relevance: 0.56
+
+# --- arXiv by topic ----------------------------------------------------------
+#
+# The applied bucket is two topics, not a field. `cat:cs.CL` announces about 355
+# papers a day and cs.IR another 55; these queries return one or two. Same API,
+# no key, and `published` here is the paper's own submission date rather than the
+# day's announcement batch.
+- id: arxiv-text2sql
+  family: arxiv
+  dated_by: first_seen
+  bucket: applied
+  kind: arxiv_query
+  query: 'abs:"text-to-SQL" OR abs:"NL2SQL" OR abs:"database agent"'
+
+- id: arxiv-docai
+  family: arxiv
+  dated_by: first_seen
+  bucket: applied
+  kind: arxiv_query
+  query: 'abs:"document understanding" OR abs:"document AI" OR abs:"OCR"'
+
+- id: arxiv-agents
+  family: arxiv
+  dated_by: first_seen
+  bucket: agent-eng
+  kind: arxiv_query
+  query: 'abs:"context engineering" OR abs:"agent harness" OR abs:"tool use" OR abs:"Model Context Protocol"'

@@ -1,0 +1,10 @@
+name: news-ledger
+version: 0.1.0
+description: "The AI news digest's data layer: news_candidates pulls a fixed source table, keeps the period since the last posted digest, merges reports of one story and drops what was already posted; news_read returns what the feeds already carried for one story; a post_llm_call hook records the stories whose links appear in the finished digest. Takes no URL from the model."
+author: hermes-harness
+kind: standalone
+provides_tools:
+  - news_candidates
+  - news_read
+hooks:
+  - post_llm_call

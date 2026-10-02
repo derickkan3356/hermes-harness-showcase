@@ -1,0 +1,5 @@
+name: fetch-cascade
+version: 0.1.0
+description: "Serves web_extract from this machine: an HTTP GET, then a Chromium render when the first read fails a quality gate, both extracted with trafilatura. Select it with web.extract_backend: local-cascade."
+author: hermes-harness
+kind: backend

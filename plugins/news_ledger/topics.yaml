@@ -1,0 +1,39 @@
+# What each bucket is about, written as a paragraph an embedding model compares
+# every story against. `relevance` in a candidate row is the similarity to the
+# closest of these, and `topic` names it. The filter on it is per source
+# (`min_relevance` in sources.yaml), not per topic: see docs/ai-news.md
+# (Relevance). A change here moves every score, so rerun
+# `uv run evals/relevance/relevance_eval.py pool` and `report` after one.
+
+- name: models
+  bucket: models
+  description: >-
+    A new large language model or multimodal model released by an AI lab, its
+    weights, benchmark results and evaluations, and news from model providers
+    such as OpenAI, Anthropic, Google DeepMind, Meta, Mistral, Qwen and DeepSeek.
+
+- name: agent-engineering
+  bucket: agent-eng
+  description: >-
+    Building LLM agents: context engineering, agent harnesses, tool use and
+    function calling, the Model Context Protocol, agent memory, retrieval
+    augmented generation, planning, multi-agent systems and agent evaluation.
+
+- name: document-ai
+  bucket: applied
+  description: >-
+    Document AI: OCR, parsing PDFs and scanned pages, layout analysis, and
+    extracting text, tables and forms from visually rich documents.
+
+- name: text-to-sql
+  bucket: applied
+  description: >-
+    Database agents: translating natural-language questions into SQL,
+    text-to-SQL, and LLMs that query tables and relational databases.
+
+- name: local-models
+  bucket: open-weights
+  description: >-
+    Running open-weight models locally: quantization such as GGUF, AWQ and FP8,
+    llama.cpp, vLLM, LM Studio and Ollama, fitting models on consumer GPUs, and
+    abliterated or uncensored fine-tunes.

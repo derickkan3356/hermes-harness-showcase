@@ -1,0 +1,160 @@
+# Master CV: every true fact, written by the user. The `cv` plugin reads it;
+# the agent picks and phrases facts from it per job, and cites fact ids.
+#
+# This copy is a fictional example: the person, companies and projects are made up.
+# It has the same shape as the real one, so the plugin runs on it.
+#
+# - A fact is one true claim, as specific as possible: numbers, tools, scale.
+#   Not a CV sentence. The agent writes the sentence.
+# - Fact ids are unique across the whole file and never reused. Prefix = project id.
+# - Company, title, dates, education and contact are printed from here by id;
+#   the model never writes them.
+# - `seeds` (optional, per project): your own phrasing for one angle, or a short
+#   note on how to frame the project. The agent follows them.
+
+schema: 1
+
+contact:
+  name: Alex Chan
+  phone: "+852 0000 0000"
+  email: alex.chan@example.com
+  location: Hong Kong
+  github: https://github.com/example
+  linkedin: null
+
+right_to_work: Hong Kong permanent resident
+notice_period: 1 month
+languages:
+  - {name: Cantonese, level: native}
+  - {name: English, level: fluent}
+  - {name: Mandarin, level: basic}
+
+# ---------------------------------------------------------------- roles
+
+roles:
+  - id: harbourtech
+    company: Harbour Tech Consulting Limited
+    company_about: IT consultancy
+    location: Hong Kong
+    from: 2024-03
+    to: null            # present
+    titles:             # official titles, never changed on the CV
+      - {title: Data Scientist, from: 2024-03, to: 2025-08}
+      - {title: AI Engineer, from: 2025-09, to: null}
+    facts:
+      - id: harbourtech.shift
+        text: Joined as Data Scientist; the work moved from forecasting models to LLM applications, and the title became AI Engineer in September 2025.
+      - id: harbourtech.ai-coding
+        text: Wrote code for client and internal projects with AI coding agents, Claude Code and Cursor.
+    projects: [kb-assistant, invoice-ocr]
+
+  - id: kowloonlogistics
+    company: Kowloon Logistics Group
+    company_about: freight and warehousing
+    location: Hong Kong
+    from: 2022-07
+    to: 2024-02
+    titles:
+      - {title: Data Analyst, from: 2022-07, to: 2024-02}
+    projects: [volume-forecast]
+
+# ---------------------------------------------------------------- projects
+# client: a general description. Client names never go on the CV or in this file.
+
+projects:
+
+  - id: kb-assistant
+    role: harbourtech
+    name: Internal knowledge assistant
+    client: Harbour Tech (internal)
+    from: 2025-09
+    to: null
+    my_role: technical owner
+    facts:
+      - id: kb-assistant.scope
+        text: Rolled out to about 40 staff as the approved place to ask questions about internal policies and project documents.
+      - id: kb-assistant.rag
+        text: Built retrieval-augmented generation over 3,000 internal documents with PostgreSQL and pgvector.
+      - id: kb-assistant.local
+        text: Serves an open-weight LLM on a company GPU server, so no document leaves the company network.
+      - id: kb-assistant.eval
+        text: Wrote an evaluation set of 50 questions with reference answers and ran it before every model or prompt change.
+      - id: kb-assistant.citations
+        text: Every answer cites the documents it used; an answer with no retrieved source says so instead of guessing.
+    seeds:
+      - "Lead with the data staying in house, not with the model."
+
+  - id: invoice-ocr
+    role: harbourtech
+    name: Invoice data extraction
+    client: a Hong Kong trading company
+    from: 2024-09
+    to: 2025-04
+    my_role: sole engineer
+    facts:
+      - id: invoice-ocr.what
+        text: Extracted supplier, date, line items and totals from scanned invoices into the client's ERP.
+      - id: invoice-ocr.stack
+        text: Used Azure AI Document Intelligence for layout and an LLM for fields the layout model missed.
+      - id: invoice-ocr.check
+        text: Checked that line items add up to the invoice total in code, and sent invoices that did not to a person.
+      - id: invoice-ocr.result
+        text: Cut manual entry from about 6 minutes to under 1 minute per invoice on a test set of 200 invoices.
+    seeds: []
+
+  - id: volume-forecast
+    role: kowloonlogistics
+    name: Warehouse volume forecast
+    from: 2023-01
+    to: 2024-02
+    facts:
+      - id: volume-forecast.model
+        text: Built a weekly volume forecast per warehouse with LightGBM on two years of shipment data.
+      - id: volume-forecast.result
+        text: Lowered forecast error (MAPE) from 18% to 11% against the spreadsheet method it replaced.
+      - id: volume-forecast.report
+        text: Published the forecast to a Power BI report the operations team used for weekly staffing.
+    seeds: []
+
+  - id: hermes-harness
+    role: null
+    kind: personal
+    name: Personal AI agent on a local GPU
+    url: null
+    from: 2026-09
+    to: null
+    facts:
+      - id: hermes-harness.what
+        text: Runs a personal AI agent on a local GPU, reachable from laptop and phone, for web search, daily news and job digests, and CVs tailored per job.
+      - id: hermes-harness.ai-coding
+        text: Built with Claude Code and Cursor under a written contract of rules and plans the agents follow.
+    seeds: []
+
+# ---------------------------------------------------------------- education
+
+education:
+  - id: msc
+    degree: Master of Science in Data Science
+    school: Example University (online, part-time)
+    from: 2021-09
+    to: 2023-06
+  - id: beng
+    degree: Bachelor of Engineering
+    school: Example University of Hong Kong
+    from: 2018-09
+    to: 2022-06
+
+certifications: []
+
+# ---------------------------------------------------------------- skills
+# Only skills a fact above shows. The agent lists the ones the JD asks for.
+
+skills:
+  llm_and_agents: [LLM agents, retrieval-augmented generation, LLM evaluation, prompt engineering]
+  local_llm_serving: [open-weight models, LM Studio]
+  machine_learning: [LightGBM, time-series forecasting]
+  document_ai: [Azure AI Document Intelligence]
+  data: [PostgreSQL, pgvector, pandas, Power BI]
+  programming: [Python, SQL]
+  ai_coding_tools: [Claude Code, Cursor]
+  tools: [Git, uv]

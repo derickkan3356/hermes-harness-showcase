@@ -1,0 +1,140 @@
+# A fictional example profile: the wanted and unwanted work and the salary floor
+# are made up. The rules, sources and lists below are the ones the harness runs.
+#
+# What the job digest looks for and what it drops. Read by workers/sources.py
+# (the queries), workers/rules.py (the hard denies and flags) and the model,
+# which judges each surviving entry against `description` and `not_wanted`. Why
+# each rule is what it is: docs/hk-jobs.md (What code drops, What the model judges).
+
+description: >
+  Building AI systems hands-on, in code: LLM applications, AI agents and tool use,
+  retrieval-augmented generation, and the data pipelines under them. AI is the
+  whole of the job, not one part of a wider role, and the work ships: applied
+  engineering that puts AI into use, not research on new models. Four
+  years of experience: an internal knowledge assistant on a self-hosted LLM,
+  invoice extraction with document AI, and demand forecasting.
+
+# Work this person does not want, described by what the job is day to day. Named
+# by the work, never by a title: the model reads the JD, and a title it saw here
+# would become a reason in itself.
+not_wanted:
+  - Mobile app development as the main work
+  - Product management — owning scope, roadmap and priorities rather than building
+  - Coordinating projects, vendors or stakeholders rather than building
+  - Leading a team as the main job
+  - Selling, presales or account management
+  - Data labelling or producing AI training data
+  - Developing new models or ML algorithms rather than systems that use them
+  - IT support, operations or administration, even when some of the work is AI
+
+salary_floor: 30000   # HKD a month (an example figure); an ad whose stated range tops out below it is dropped
+
+# The user has four years. A JD that states a minimum of this many years or more
+# is dropped; a stated minimum above four but below it is marked. "Preferred"
+# and "a plus" are not requirements.
+experience_deny_from: 6
+experience_years: 4
+
+# A title that states one of these is outside the band: the user wants an
+# individual-contributor role, Senior or no prefix. Manager is here although
+# Hong Kong also uses it as a grade for IC work ("Assistant Manager (AI Focus)",
+# "Assistant IT Manager (in the grade of Computer Officer II)"); those go too.
+deny_titles:
+  - '\bmanager\b'
+  - '經理|经理'
+  - '\bintern(ship)?\b'
+  - '\bgraduate\b'
+  - '\btrainee\b'
+  - '\bdirector\b'
+  - '\bhead of\b'
+  - '\bvp\b'
+  - '\bvice president\b'
+  - '\bchief\b'
+  - '實習|实习'
+  - '總監|总监'
+
+# An ad whose title, teaser, highlights and JD together name none of these is not
+# AI work, and is dropped. Not the title alone: titles often say little about the
+# work (an SRE ad that was AI agent and RAG engineering). Broad on purpose: a false
+# match only keeps an ad for the model, a missing term drops a real one.
+ai_terms:
+  - '\bA\.?I\b'
+  - 'artificial intelligence'
+  - '\bgen ?ai\b'
+  - '\bLLMs?\b'
+  - 'large language model'
+  - 'generative'
+  - '\bagent(s|ic)?\b'
+  - 'machine learning'
+  - '\bML\b'
+  - 'deep learning'
+  - '\bNLP\b'
+  - 'natural language processing'
+  - '\bRAG\b'
+  - 'retrieval[- ]augmented'
+  - 'copilot'
+  - 'openai'
+  - 'chatgpt'
+  - '\bGPT'
+  - 'langchain'
+  - 'prompt engineering'
+  - 'computer vision'
+  - '人工智能'
+  - '大模型'
+  - '大[語语]言模型'
+  - '生成式'
+  - '機器學習|机器学习'
+  - '算法'
+
+jobsdb:
+  # Topic net, every arrangement: the On-site ads are never posted but tell code
+  # which CTgoodjobs ads are the same on-site job.
+  keywords: [AI engineer, LLM, generative AI, AI agent, machine learning engineer, Azure AI]
+  # Wide net: Hybrid and Remote across every classification, for AI roles under
+  # titles the keywords miss. Every JobsDB ad states an arrangement.
+  wide_arrangements: [2, 3]
+
+ctgoodjobs:
+  # URL slugs of jobs.ctgoodjobs.hk/jobs/<slug>-jobs. 人工智能 surfaces Hong Kong
+  # titles the English keywords miss (Analyst Programmer (AI), Technology Officer (AI)).
+  slugs: [ai-engineer, llm, generative-ai, ai-agent, machine-learning-engineer, azure-ai, 人工智能]
+  pages: 5   # most pages per slug; the next page only when the one before is full
+
+# Advertisers that recruit for someone else. Matched on the normalized name.
+agencies:
+  - Michael Page
+  - Page Personnel
+  - Robert Walters
+  - Robert Half
+  - Hays
+  - Links International
+  - KOS International
+  - Ambition
+  - Randstad
+  - Adecco
+  - Morgan McKinley
+  - Hudson
+  - Harvey Nash
+  - Ignite Recruitment
+  - Pinpoint Asia
+  - DJRecruit
+  - Leadership Solutions
+  - Manpower
+  - Kelly Services
+  - Recruit Express
+  - Asia Talent Advisory
+  - ZING Global Human Resources
+  - Charterhouse
+  - NLS
+
+# Firms that place their own staff at a client.
+outsourcing:
+  - APJ Software
+  - Axiom Technologies
+  - Techforce
+  - TEKsystems
+  - FDM Group
+
+# Phrases in an ad's text that mark it as an agency's or a placement.
+agency_phrases: ['\bour client\b', '\bmy client\b', '\bclient details\b', '\bon behalf of\b']
+outsourcing_phrases: ['\bthe resource\b', '\bdeployed to (our|the) client\b', '\bclient site\b']

@@ -1,0 +1,11 @@
+name: job-ledger
+version: 0.1.0
+description: "The Hong Kong job digest's data layer: job_candidates pulls JobsDB and CTgoodjobs into the ledger, takes the ads of the last seven days, applies the hard denies in profile.yaml, folds a role posted per product and drops jobs already shown; job_read returns an entry's whole JD from the ledger; job_feedback records the user's verdict on an entry; a post_llm_call hook records what the finished digest showed and posted. Takes no URL from the model."
+author: hermes-harness
+kind: standalone
+provides_tools:
+  - job_candidates
+  - job_read
+  - job_feedback
+hooks:
+  - post_llm_call
