@@ -29,9 +29,9 @@ flowchart LR
 
 | AI news digest | HK job digest | A CV for one job |
 | --- | --- | --- |
-| <img src="img/news.jpg" alt="AI news digest in the chat app on a phone" width="260"> | <img src="img/jobs.jpg" alt="Hong Kong job digest in the chat app on a phone" width="260"> | <img src="img/cv.jpg" alt="A CV request and the reply with Word and PDF files attached" width="260"> |
+| <a href="img/news.jpg"><img src="img/news.jpg" alt="AI news digest in the chat app on a phone" width="260"></a> | <a href="img/jobs.jpg"><img src="img/jobs.jpg" alt="Hong Kong job digest in the chat app on a phone" width="260"></a> | <a href="img/cv.jpg"><img src="img/cv.jpg" alt="A CV request and the reply with Word and PDF files attached" width="260"></a> |
 
-Screenshots from my phone. Company names, the job link and details of the application are hidden.
+Screenshots from my phone; click one to see it larger. Company names, the job link and details of the application are hidden.
 
 ## Why not just ask ChatGPT?
 

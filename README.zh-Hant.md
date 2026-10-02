@@ -29,9 +29,9 @@ flowchart LR
 
 | AI 新聞摘要 | 香港職位摘要 | 針對一份工作的 CV |
 | --- | --- | --- |
-| <img src="img/news.jpg" alt="手機聊天 app 上的 AI 新聞摘要" width="260"> | <img src="img/jobs.jpg" alt="手機聊天 app 上的香港職位摘要" width="260"> | <img src="img/cv.jpg" alt="要求撰寫 CV，回覆附上 Word 和 PDF 檔案" width="260"> |
+| <a href="img/news.jpg"><img src="img/news.jpg" alt="手機聊天 app 上的 AI 新聞摘要" width="260"></a> | <a href="img/jobs.jpg"><img src="img/jobs.jpg" alt="手機聊天 app 上的香港職位摘要" width="260"></a> | <a href="img/cv.jpg"><img src="img/cv.jpg" alt="要求撰寫 CV，回覆附上 Word 和 PDF 檔案" width="260"></a> |
 
-以上是我手機的截圖。公司名稱、職位連結和申請細節已遮蓋。
+以上是我手機的截圖，點擊可放大。公司名稱、職位連結和申請細節已遮蓋。
 
 ## 為甚麼不直接問 ChatGPT？
 
