@@ -102,7 +102,7 @@ flowchart LR
 
 這裏的內容不是用來安裝的。想了解它如何建成，建議按以下次序閱讀：
 
-1. [CLAUDE.md](CLAUDE.md)：每個 agent session 開始時讀的工作合約。
+1. [AGENTS.md](AGENTS.md)：每個 agent session 開始時讀的工作合約。
 2. [.cursor/plans/security.plan.md](.cursor/plans/security.plan.md)：一份已完成的 plan。每一步都附證據才剔掉，每個被否決的方案都指向它的理由現在放在哪裏。
 3. [docs/security.md](docs/security.md)：那份 plan 的結論最後放在這裏。
 4. [.cursor/plans/ai-news.plan.md](.cursor/plans/ai-news.plan.md)：一份仍在進行的 plan，有最大的未知數、下一步和完成條件。
@@ -111,7 +111,7 @@ flowchart LR
 
 ### 設計決定
 
-- **只用本地 model。** 不用雲端 LLM，連 fallback 也不用。本地 model 做不到的事，就是這個 harness 暫時不做的事。（[CLAUDE.md](CLAUDE.md)）
+- **只用本地 model。** 不用雲端 LLM，連 fallback 也不用。本地 model 做不到的事，就是這個 harness 暫時不做的事。（[AGENTS.md](AGENTS.md)）
 - **一個 fetch layer，承載多個用途。** `web_extract` 在同一個 backend 內逐層升級（先 HTTP + trafilatura，再本地 Chromium），共用一道質素關卡。新聞和職位摘要都建立在它之上，從不自設 fetcher。在 30 條測試 URL 上：23 條乾淨、5 條降級、2 條失敗；付費 fetch API 則是 21 / 0 / 9。（[docs/web-fetch.md](docs/web-fetch.md)）
 - **能力直接不存在，而不是加上關卡。** 面向瀏覽器的平台只有處理資料的 tool：沒有 shell、檔案、瀏覽器或 code execution。Hermes 的指令黑名單保留給 terminal 使用，但它不是安全邊界。（[docs/security.md](docs/security.md)）
 - **固定規則交給 code，判斷交給 model，code 為它提供線索。** 不可以用 heuristic 在 model 看到之前就悄悄剔除項目。（[docs/ai-news.md](docs/ai-news.md)、[docs/hk-jobs.md](docs/hk-jobs.md)）
@@ -132,14 +132,14 @@ flowchart LR
 | --- | --- | --- |
 | **Context drift** | 文件寫下 WSL 連到 Windows 主機用的地址，但重新開機後地址變了。讀了文件的 agent 會連去舊地址。 | 即時狀態在需要時由 [tools/facts.sh](tools/facts.sh) 印出。凡是 script 能印出的數字，都不寫進任何文件、plan 或規則檔。 |
 | **Context rot** | 一份保留所有已完成步驟的 plan 越來越長，下一步被埋沒。Context 越長，agent 越難留意重要內容，即使內容就在其中。 | Plan 只保留進行中的狀態：最大的未知數、下一步、完成條件。已確定的結論搬到 [docs/](docs/)。每條工作線一份 plan，agent 只讀自己那一份。 |
-| **每次都載入的檔案越來越長** | 任何人覺得有用的規則都寫進 `CLAUDE.md`，而每一輪都要為它付出 context。 | [CLAUDE.md](CLAUDE.md) 只寫缺少了就會令 agent 做錯的內容。做法放在 `docs/`，有需要才讀。 |
+| **每次都載入的檔案越來越長** | 任何人覺得有用的規則都寫進 `AGENTS.md`，而每一輪都要為它付出 context。 | [AGENTS.md](AGENTS.md) 只寫缺少了就會令 agent 做錯的內容。做法放在 `docs/`，有需要才讀。 |
 | **歷史變成雜訊** | 「我們在九月把它搬走了」對新的 agent 沒有可用的資訊，反而可能讓它去找舊做法。 | 參考文件寫得像從來就是這個樣子。Git 才是修改紀錄。 |
 | **改寫時遺失資料** | Agent 重寫文件的一節，丟掉了一個沒人意識到很重要的事實。 | 只改有變的句子，從不整節重寫。 |
 | **已解決的問題被重新提出** | 下一個 session 又提議上星期已測試並否決的方案。 | 每個被否決的方案都在 `docs/` 寫明原因。未解答的問題留在已完成的 plan 中，作為下一份 plan 的待辦。 |
 | **「完成」其實未完成** | Agent 報告成功，但工作只是看似完成。 | 完成條件是一條指令和它的預期結果。每一步要有證據（輸出或 log 路徑）才可剔掉。 |
 | **兩個 agent，兩份記憶** | Claude Code 有自己的記憶，Cursor 和 git 都看不到。 | 關閉 agent 記憶；agent 學到的一切都寫進這個 repo，兩者都讀得到。 |
 | **檔案之間不一致** | 改動一份文件，令另一份沒人打開過的文件變得不正確。 | 每份 plan 完成前，agent 按規則審視整個 repo。 |
-| **只會附和的 agent** | 即使是壞主意，agent 也照做。 | 我的 [user-level 規則](agents/user-level-CLAUDE.md)要求它反駁，並提出更好的方案。 |
+| **只會附和的 agent** | 即使是壞主意，agent 也照做。 | 我的 [user-level 規則](agents/user-level-AGENTS.md)要求它反駁，並提出更好的方案。 |
 
 Claude Code 和 Cursor 讀同一份合約和 plan，所以任何一方都可以接手另一方未完成的工作。
 

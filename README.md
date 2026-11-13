@@ -102,7 +102,7 @@ flowchart LR
 
 Nothing here is meant to be installed. To see how it was built, read in this order:
 
-1. [CLAUDE.md](CLAUDE.md): the contract every agent session starts from.
+1. [AGENTS.md](AGENTS.md): the contract every agent session starts from.
 2. [.cursor/plans/security.plan.md](.cursor/plans/security.plan.md): a finished plan. Each step is checked off with its evidence, and each rejected option points to where its reason now lives.
 3. [docs/security.md](docs/security.md): where that plan's conclusions went.
 4. [.cursor/plans/ai-news.plan.md](.cursor/plans/ai-news.plan.md): a plan still running, with its biggest unknown, one next step and a done-when.
@@ -111,7 +111,7 @@ For the code, start with [docs/web-fetch.md](docs/web-fetch.md) and then [plugin
 
 ### Design decisions
 
-- **Local model only.** No cloud LLM, not even as a fallback. A task the local model cannot do is a task this harness does not do yet. ([CLAUDE.md](CLAUDE.md))
+- **Local model only.** No cloud LLM, not even as a fallback. A task the local model cannot do is a task this harness does not do yet. ([AGENTS.md](AGENTS.md))
 - **One fetch layer, many use cases.** `web_extract` escalates inside one backend (HTTP + trafilatura, then local Chromium) behind a shared quality gate. The news and job digests are built on it, never with their own fetchers. On 30 test URLs: 23 clean, 5 degraded, 2 failed, against a paid fetch API's 21 / 0 / 9. ([docs/web-fetch.md](docs/web-fetch.md))
 - **The capability is absent, not gated.** The browser-facing platform gets data tools only: no shell, files, browser or code execution. Hermes' command blocklist is kept for the terminal, but it is not the boundary. ([docs/security.md](docs/security.md))
 - **Code for fixed rules, the model for judgement, and code hands it clues.** A heuristic must not quietly drop an item before the model sees it. ([docs/ai-news.md](docs/ai-news.md), [docs/hk-jobs.md](docs/hk-jobs.md))
@@ -132,14 +132,14 @@ Most of the code was written by coding agents, Claude Code and Cursor. My work w
 | --- | --- | --- |
 | **Context drift** | A doc gives the address WSL uses to reach the Windows host; after a reboot the address is different. An agent that reads the doc connects to the old one. | Live state comes from [tools/facts.sh](tools/facts.sh) when needed. No doc, plan or rule file holds a number a script can print. |
 | **Context rot** | A plan that keeps every finished step grows until the next step is buried. An agent attends worse as its context grows, even when what matters is in it. | A plan holds only running state: the biggest unknown, one next step, a done-when. Finished conclusions move to [docs/](docs/). One plan per workstream, and an agent reads only its own. |
-| **An always-loaded file that grows** | Every rule anyone thought useful goes into `CLAUDE.md`, which every turn pays for. | [CLAUDE.md](CLAUDE.md) holds only what would make an agent act wrongly if missing. How-to is in `docs/`, read when the task needs it. |
+| **An always-loaded file that grows** | Every rule anyone thought useful goes into `AGENTS.md`, which every turn pays for. | [AGENTS.md](AGENTS.md) holds only what would make an agent act wrongly if missing. How-to is in `docs/`, read when the task needs it. |
 | **History as noise** | "We moved this in September" tells a fresh agent nothing it can act on, and can send it after the old way. | Reference docs are written as if they had always looked this way. Git is the changelog. |
 | **Lossy rewrites** | An agent rewrites a doc section and drops a fact nobody knew was load-bearing. | Change the sentences that changed; never rewrite a section. |
 | **Settled questions reopened** | The next session proposes the option that was tested and rejected last week. | Every rejected option has its reason in `docs/`. Open questions stay in the closed plan as the next plan's backlog. |
 | **"Done" that is not done** | The agent reports success on work that only looks finished. | A done-when is a command and its expected result. A step is checked off only with evidence: output or a log path. |
 | **Two agents, two memories** | Claude Code keeps its own memory, which Cursor and git never see. | Agent memory is off; everything an agent learns lands in this repo, where both read it. |
 | **Drift between files** | A change in one doc makes another one false, in a file nobody opened. | Before a plan closes, the agent reviews the whole repo against the rules. |
-| **An agent that agrees** | The agent builds what was asked even when it is a bad idea. | My [user-level rules](agents/user-level-CLAUDE.md) tell it to push back and offer better options. |
+| **An agent that agrees** | The agent builds what was asked even when it is a bad idea. | My [user-level rules](agents/user-level-AGENTS.md) tell it to push back and offer better options. |
 
 Both Claude Code and Cursor read the same contract and plans, so either can pick up where the other stopped.
 

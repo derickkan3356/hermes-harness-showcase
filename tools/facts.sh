@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Live facts for this machine. Print, do not paste into plans or CLAUDE.md.
+# Live facts for this machine. Print, do not paste into plans or AGENTS.md.
 # Usage: tools/facts.sh [config|lmstudio|hermes|net|plans|tools|web|webui|news|jobs]
 
 set -u

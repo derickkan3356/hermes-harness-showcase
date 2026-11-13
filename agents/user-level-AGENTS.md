@@ -1,4 +1,4 @@
-# CLAUDE.md (user level)
+# AGENTS.md (user level)
 
 Applies to every project on this machine.
 
@@ -14,7 +14,7 @@ Most of my work is R&D — the right technical approach is often not obvious. Yo
 
 ## Writing docs
 
-Applies to reference material: CLAUDE.md / AGENTS.md, READMEs, config comments, code comments, any doc whose job is to tell the reader what is true now. Does NOT apply to changelogs, postmortems, or a plan's history file — there the record is the point.
+Applies to reference material: AGENTS.md / AGENTS.md, READMEs, config comments, code comments, any doc whose job is to tell the reader what is true now. Does NOT apply to changelogs, postmortems, or a plan's history file — there the record is the point.
 
 **Write the document as if it had always looked this way.**
 
