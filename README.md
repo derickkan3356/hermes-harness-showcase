@@ -126,7 +126,7 @@ Most of the code was written by coding agents, Claude Code and Cursor. My work w
 - **Making the technical decisions.** What to build, where code ends and the model begins, which option the measurements support.
 - **Reviewing what the agents produced.** Reading the diffs, checking each claim against command output or logs, and sending back work that looked done but was not.
 
-**Context engineering.** A coding agent starts every session knowing nothing but what it reads. Most of the design is about what it reads: enough to act right, nothing stale, nothing it does not need. Each part of this repo answers one failure. "Agent" here means the coding agent, Claude Code or Cursor:
+**Context engineering.** A coding agent starts every session knowing nothing but what it reads. Most of the design is about what it reads: enough to act right, nothing stale, nothing it does not need. Each part of this repo answers one failure. "Agent" here means Codex or dsh now, and Claude Code or Cursor in the first-version examples:
 
 | Failure | What it looks like | What this repo does |
 | --- | --- | --- |
@@ -137,11 +137,11 @@ Most of the code was written by coding agents, Claude Code and Cursor. My work w
 | **Lossy rewrites** | An agent rewrites a doc section and drops a fact nobody knew was load-bearing. | Change the sentences that changed; never rewrite a section. |
 | **Settled questions reopened** | The next session proposes the option that was tested and rejected last week. | Every rejected option has its reason in `docs/`. Open questions stay in the closed plan as the next plan's backlog. |
 | **"Done" that is not done** | The agent reports success on work that only looks finished. | A done-when is a command and its expected result. A step is checked off only with evidence: output or a log path. |
-| **Two agents, two memories** | Claude Code keeps its own memory, which Cursor and git never see. | Agent memory is off; everything an agent learns lands in this repo, where both read it. |
+| **Private agent memory** | A product keeps memory that the other agents and git never see. | Private memory is not the source of truth; everything an agent learns lands in this repo, where every agent can read it. |
 | **Drift between files** | A change in one doc makes another one false, in a file nobody opened. | Before a plan closes, the agent reviews the whole repo against the rules. |
 | **An agent that agrees** | The agent builds what was asked even when it is a bad idea. | My [user-level rules](agents/user-level-AGENTS.md) tell it to push back and offer better options. |
 
-Both Claude Code and Cursor read the same contract and plans, so either can pick up where the other stopped.
+Codex, dsh and Cursor read the same contract and plans, so any one can pick up where another stopped.
 
 Four times I caught an agent's work going wrong:
 

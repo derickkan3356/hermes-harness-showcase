@@ -126,7 +126,7 @@ flowchart LR
 - **作技術決定。** 做甚麼、code 和 model 的分界在哪裏、量度結果支持哪個方案。
 - **審視 agent 的成果。** 閱讀 diff，用指令輸出或 log 核對每一項聲稱，把看似完成、實際未完成的工作退回。
 
-**Context engineering。** Coding agent 每個 session 開始時，只知道它讀到的東西。所以大部分設計都是關於它讀甚麼：足夠做對事，沒有過時內容，沒有不需要的內容。這個 repo 的每一部分都針對一種失敗。這裏的「agent」指 coding agent，即 Claude Code 或 Cursor：
+**Context engineering。** Coding agent 每個 session 開始時，只知道它讀到的東西。所以大部分設計都是關於它讀甚麼：足夠做對事，沒有過時內容，沒有不需要的內容。這個 repo 的每一部分都針對一種失敗。這裏的「agent」現在指 Codex 或 dsh，第一版的例子則是 Claude Code 或 Cursor：
 
 | 失敗 | 實際情況 | 這個 repo 的做法 |
 | --- | --- | --- |
@@ -137,11 +137,11 @@ flowchart LR
 | **改寫時遺失資料** | Agent 重寫文件的一節，丟掉了一個沒人意識到很重要的事實。 | 只改有變的句子，從不整節重寫。 |
 | **已解決的問題被重新提出** | 下一個 session 又提議上星期已測試並否決的方案。 | 每個被否決的方案都在 `docs/` 寫明原因。未解答的問題留在已完成的 plan 中，作為下一份 plan 的待辦。 |
 | **「完成」其實未完成** | Agent 報告成功，但工作只是看似完成。 | 完成條件是一條指令和它的預期結果。每一步要有證據（輸出或 log 路徑）才可剔掉。 |
-| **兩個 agent，兩份記憶** | Claude Code 有自己的記憶，Cursor 和 git 都看不到。 | 關閉 agent 記憶；agent 學到的一切都寫進這個 repo，兩者都讀得到。 |
+| **Agent 私有記憶** | 一個產品保存的記憶，其他 agent 和 git 都看不到。 | 私有記憶不是 source of truth；agent 學到的一切都寫進這個 repo，每個 agent 都讀得到。 |
 | **檔案之間不一致** | 改動一份文件，令另一份沒人打開過的文件變得不正確。 | 每份 plan 完成前，agent 按規則審視整個 repo。 |
 | **只會附和的 agent** | 即使是壞主意，agent 也照做。 | 我的 [user-level 規則](agents/user-level-AGENTS.md)要求它反駁，並提出更好的方案。 |
 
-Claude Code 和 Cursor 讀同一份合約和 plan，所以任何一方都可以接手另一方未完成的工作。
+Codex、dsh 和 Cursor 讀同一份合約和 plan，所以任何一方都可以接手另一方未完成的工作。
 
 以下四次，我發現 agent 的工作出了錯：
 

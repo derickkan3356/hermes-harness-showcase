@@ -98,7 +98,7 @@ Never load with **parallel > 1** — it multiplies KV cache, it does not split i
 ## Conventions
 
 - This machine has passwordless sudo. The Hermes installer already used it (ripgrep, ffmpeg, Playwright libs).
-- Claude Code's shell sets `HTTPS_PROXY=http://127.0.0.1:8888`, which exits in the US. Hermes exits in Hong Kong. Unset the proxy variables before testing any search engine that localizes by IP, or the results are not what Hermes sees.
+- Codex's shell sets `HTTPS_PROXY=http://127.0.0.1:8888`, which exits in Japan. Hermes exits in Hong Kong. Unset the proxy variables before testing any search engine that localizes by IP, or the results are not what Hermes sees.
 - A service meant to stay up runs as a systemd user unit. A unit we write: canonical copy in this repo, symlinked into `~/.config/systemd/user/`. The gateway unit is Hermes': `hermes gateway install` writes it and Hermes rewrites it on every gateway start, so it is not tracked and not symlinked; our changes to it go in a drop-in (`hermes-gateway.service.d/*.conf`) here. Starting a service from an agent's shell is for a probe only: stop it when the probe is done, and say it was stopped. How: `docs/services.md`.
-- `.claude/settings.json` sets `autoMemoryEnabled: false`: agent memory must land in this repo, not in `~/.claude`, or Cursor and git can't see it.
+- Durable agent context must land in this repo, not in a product's private memory, so Codex, Cursor and git can all see it.
 - "Can we do X?" means technically possible (API, plugin, extra tool, a patch in this repo). Hermes not shipping it out of the box is a default, not a no. Do not talk as if a missing config key or a thin client wrapper make it techically impossible.

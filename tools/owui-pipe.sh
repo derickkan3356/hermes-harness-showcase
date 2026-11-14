@@ -27,7 +27,7 @@ if [[ -z "$KEY" ]]; then
   exit 1
 fi
 
-# Claude Code's shell has a proxy that exits in the US; Open WebUI is local.
+# Codex's shell has a proxy that exits in Japan; Open WebUI is local.
 api() {
   local method=$1 path=$2
   shift 2

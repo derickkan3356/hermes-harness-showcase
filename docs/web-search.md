@@ -139,7 +139,7 @@ It is not wired up, and the reason is that mainland queries already work without
 
 ## Testing search from this machine
 
-Search engines localize by exit IP. Claude Code's shell sets `HTTPS_PROXY=http://127.0.0.1:8888`, which exits in Seattle. Hermes run from a normal terminal exits in Hong Kong. For any test of a keyless engine, unset `HTTP_PROXY`, `HTTPS_PROXY`, `http_proxy`, `https_proxy`. API providers with an explicit region parameter are not affected. `region_eval.py` prints the exit location at the start of each run.
+Search engines localize by exit IP. Codex's shell sets `HTTPS_PROXY=http://127.0.0.1:8888`, which exits in Japan. Hermes run from a normal terminal exits in Hong Kong. For any test of a keyless engine, unset `HTTP_PROXY`, `HTTPS_PROXY`, `http_proxy`, `https_proxy`. API providers with an explicit region parameter are not affected. `region_eval.py` prints the exit location at the start of each run.
 
 Tools, all run with `uv run` from the repo root:
 
